@@ -1,7 +1,14 @@
-import DataTable from "@/components/DataTable";
+import { cn } from "cn";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { Suspense } from "react";
+import CoinOverview from "@/components/home/CoinOverview";
+import TrendingCoins from "@/components/home/TrendingCoins";
+import {
+  CoinOverViewFallback,
+  TrendingCoinFallback,
+} from "@/components/home/skeleton/FallBack";
 
 const columns: DataTableColumn<TrendingCoin>[] = [
   {
@@ -12,34 +19,53 @@ const columns: DataTableColumn<TrendingCoin>[] = [
       return (
         <Link href={`/coins/${item.id}`}>
           <Image src={item.large} alt={item.name} width={36} height={36} />
+          <p>{item.name}</p>
         </Link>
       );
     },
   },
+  {
+    header: "24h Change",
+    cellClassName: "name-cell",
+    cell: (coin) => {
+      const { item } = coin;
+      const isTrendingUp = item.data.price_change_percentage_24h.usd > 0;
+      return (
+        <div
+          className={cn(
+            "price-change",
+            isTrendingUp ? "text-green-500" : "text-red-500",
+          )}
+        >
+          <p>
+            {isTrendingUp ? (
+              <TrendingUp width={16} height={16} />
+            ) : (
+              <TrendingDown width={16} height={16} />
+            )}
+          </p>
+        </div>
+      );
+    },
+  },
+
+  {
+    header: "Price",
+    cellClassName: "price-cell",
+    cell: (coin) => coin.item.data.price,
+  },
 ];
 
-const Page = () => {
+const Page = async () => {
   return (
     <main className="main-container">
       <section className="home-grid">
-        <div id="coin-overview">
-          <div className="header pt-2">
-            <Image
-              src={
-                "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"
-              }
-              alt="Bitcoin"
-              width={56}
-              height={56}
-            />
-            <div className="info">
-              <p>Bitcoin / BTC</p>
-              <h1>$89,113.00</h1>
-            </div>
-          </div>
-        </div>
-        <p>Trending Coins</p>
-        <DataTable columns={[]} data={[]} />
+        <Suspense fallback={<CoinOverViewFallback />}>
+          <CoinOverview />
+        </Suspense>
+        <Suspense fallback={<TrendingCoinFallback />}>
+          <TrendingCoins />
+        </Suspense>
       </section>
       <section className="w-full mt-7 space-y-4">
         <p>Categories</p>
