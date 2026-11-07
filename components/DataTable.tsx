@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   Table,
   TableBody,
@@ -13,11 +11,11 @@ import { cn } from "cn";
 const DataTable = <T,>({
   columns,
   data,
-  rowkey,
+  rowKey,
   tableClassName,
   headerRowClassName,
   headerCellClassName,
-  bodyRowClassname,
+  bodyRowClassName,
   bodyCellClassName,
   headerClassName,
 }: DataTableProps<T>) => {
@@ -42,10 +40,10 @@ const DataTable = <T,>({
       <TableBody>
         {data.map((row, rowIndex) => (
           <TableRow
-            key={rowkey(row, rowIndex)}
+            key={rowKey(row, rowIndex)}
             className={cn(
               "overflow-hidden rounded-lg border-purple-100/5 hover:bg-dark-400/30! relative",
-              bodyRowClassname,
+              bodyRowClassName,
             )}
           >
             {columns.map((column, columnIndex) => (
