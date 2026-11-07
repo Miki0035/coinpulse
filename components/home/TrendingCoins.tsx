@@ -4,7 +4,7 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 import { cn } from "cn";
 import Link from "next/link";
 import Image from "next/image";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatPercentage } from "@/lib/utils";
 import { TrendingCoinFallback } from "./skeleton/FallBack";
 
 const columns: DataTableColumn<TrendingCoin>[] = [
@@ -34,7 +34,8 @@ const columns: DataTableColumn<TrendingCoin>[] = [
             isTrendingUp ? "text-green-500" : "text-red-500",
           )}
         >
-          <p>
+          <p className="flex items-center">
+            {formatPercentage(item.data.price_change_percentage_24h.usd)}
             {isTrendingUp ? (
               <TrendingUp width={16} height={16} />
             ) : (
