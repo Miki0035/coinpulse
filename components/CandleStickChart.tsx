@@ -27,10 +27,6 @@ const CandleStickChart = ({
   coinId,
   height = 360,
   initialPeriod = "daily",
-  liveOhlcv = null,
-  mode = "historical",
-  liveInterval,
-  setLiveInterval,
   children,
 }: CandlestickChartProps) => {
   // REF
@@ -39,12 +35,11 @@ const CandleStickChart = ({
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
 
   // STATE
-  const [loading, setLoading] = useState(false);
   const [period, setPeriod] = useState(initialPeriod);
   const [ohlcData, setOhlcData] = useState<OHLCData[]>(data ?? []);
 
   // TRANSITION
-  const [isPending, setIsPending] = useTransition();
+  const [isPending] = useTransition();
 
   const fetchOHLCData = async (selectedPeriod: Period) => {
     try {
@@ -73,6 +68,7 @@ const CandleStickChart = ({
     setPeriod(newPeriod);
   };
 
+  // USEEFFECT #1 -> For showing candlestick based on time series
   useEffect(() => {
     const container = chartContainerRef.current;
     if (!container) return;
@@ -84,7 +80,18 @@ const CandleStickChart = ({
     });
 
     const series = chart.addSeries(CandlestickSeries, getCandlestickConfig());
-    series.setData(convertOHLCData(ohlcData));
+
+    const convertedToSeconds = ohlcData.map(
+      (item) =>
+        [
+          Math.floor(item[0] / 1000),
+          item[1],
+          item[2],
+          item[3],
+          item[4],
+        ] as OHLCData,
+    );
+    series.setData(convertOHLCData(convertedToSeconds));
     chart.timeScale().fitContent();
 
     chartRef.current = chart;
@@ -139,7 +146,7 @@ const CandleStickChart = ({
                 period === value ? "config-button-active" : "config-button"
               }
               onClick={() => handlePeriodChange(value)}
-              disabled={loading}
+              disabled={isPending}
             >
               {label}
             </button>
