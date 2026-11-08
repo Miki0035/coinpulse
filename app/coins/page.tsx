@@ -5,8 +5,6 @@ import Link from "next/link";
 
 import { cn, formatPercentage, formatCurrency } from "@/lib/utils";
 import CoinsPagination from "@/components/CoinsPagination";
-import { Suspense } from "react";
-import { TrendingCoinFallback } from "@/components/home/skeleton/FallBack";
 
 export const instant = false;
 
