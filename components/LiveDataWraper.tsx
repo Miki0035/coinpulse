@@ -1,16 +1,17 @@
 "use client";
 import { Separator } from "./ui/separator";
 import CandleStickChart from "./CandleStickChart";
-import { useCoinGeckoWebSocket } from "@/hooks/useCoinGeckoWebSocket";
-import { formatCurrency, timeAgo } from "@/lib/utils";
-import DataTable from "./DataTable";
+// import { useCoinGeckoWebSocket } from "@/hooks/useCoinGeckoWebSocket";
+// import { formatCurrency, timeAgo } from "@/lib/utils";
+// import DataTable from "./DataTable";
 import { useState } from "react";
 import CoinHeader from "./CoinHeader";
+import RelativeTime from "./RelativeTime";
 
 const LiveDataWraper = ({
-  children,
+  // children,
   coinId,
-  poolId,
+  // poolId,
   coin,
   coinOHLCData,
 }: LiveDataProps) => {
@@ -22,39 +23,39 @@ const LiveDataWraper = ({
   //   liveInterval,
   // });
 
-  const tradeColumns: DataTableColumn<Trade>[] = [
-    {
-      header: "Price",
-      cellClassName: "price-cell",
-      cell: (trade) => (trade.price ? formatCurrency(trade.price) : "-"),
-    },
-    {
-      header: "Amount",
-      cellClassName: "amount-cell",
-      cell: (trade) => trade.amount?.toFixed(4) ?? "-",
-    },
-    {
-      header: "Value",
-      cellClassName: "value-cell",
-      cell: (trade) => (trade.value ? formatCurrency(trade.value) : "-"),
-    },
-    {
-      header: "Buy/Sell",
-      cellClassName: "type-cell",
-      cell: (trade) => (
-        <span
-          className={trade.type === "b" ? "text-green-500" : "text-red-500"}
-        >
-          {trade.type === "b" ? "Buy" : "Sell"}
-        </span>
-      ),
-    },
-    {
-      header: "Time",
-      cellClassName: "time-cell",
-      cell: (trade) => (trade.timestamp ? timeAgo(trade.timestamp) : "-"),
-    },
-  ];
+  // const tradeColumns: DataTableColumn<Trade>[] = [
+  //   {
+  //     header: "Price",
+  //     cellClassName: "price-cell",
+  //     cell: (trade) => (trade.price ? formatCurrency(trade.price) : "-"),
+  //   },
+  //   {
+  //     header: "Amount",
+  //     cellClassName: "amount-cell",
+  //     cell: (trade) => trade.amount?.toFixed(4) ?? "-",
+  //   },
+  //   {
+  //     header: "Value",
+  //     cellClassName: "value-cell",
+  //     cell: (trade) => (trade.value ? formatCurrency(trade.value) : "-"),
+  //   },
+  //   {
+  //     header: "Buy/Sell",
+  //     cellClassName: "type-cell",
+  //     cell: (trade) => (
+  //       <span
+  //         className={trade.type === "b" ? "text-green-500" : "text-red-500"}
+  //       >
+  //         {trade.type === "b" ? "Buy" : "Sell"}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     header: "Time",
+  //     cellClassName: "time-cell",
+  // cell: (trade) => (trade.timestamp && <RelativeTime  date={trade.timestamp} />),
+  //   },
+  // ];
 
   return (
     <section id="live-data-wrapper">

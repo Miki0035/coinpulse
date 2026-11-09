@@ -66,11 +66,12 @@ const CoinHeader = ({
               })}
             >
               <p>{formatter(value)}</p>
-              {showIcon && isUp ? (
-                <TrendingUp width={16} height={16} />
-              ) : (
-                <TrendingDown width={16} height={16} />
-              )}
+              {showIcon &&
+                (isUp ? (
+                  <TrendingUp width={16} height={16} />
+                ) : (
+                  <TrendingDown width={16} height={16} />
+                ))}
             </div>
           </li>
         ))}

@@ -3,7 +3,7 @@
 import {
   getCandlestickConfig,
   getChartConfig,
-  LIVE_INTERVAL_BUTTONS,
+  // LIVE_INTERVAL_BUTTONS,
   PERIOD_BUTTONS,
   PERIOD_CONFIG,
 } from "@/constants";
@@ -31,8 +31,8 @@ const CandleStickChart = ({
   children,
   liveOhlcv = null,
   mode = "historical",
-  liveInterval,
-  setLiveInterval,
+  // liveInterval,
+  // setLiveInterval,
 }: CandlestickChartProps) => {
   // REF
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
@@ -195,7 +195,7 @@ const CandleStickChart = ({
           ))}
         </div>
         {/* REALTIME DATA */}
-        {liveInterval && (
+        {/* {liveInterval && (
           <div className="button-group">
             <span className="text-sm mx-2 font-medium text-purple-100/50">
               Update Frequency:
@@ -215,7 +215,7 @@ const CandleStickChart = ({
               </button>
             ))}
           </div>
-        )}
+        )} */}
       </div>
       <div ref={chartContainerRef} className="chart" />
     </div>
