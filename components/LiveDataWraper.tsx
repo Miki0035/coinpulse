@@ -5,6 +5,7 @@ import { useCoinGeckoWebSocket } from "@/hooks/useCoinGeckoWebSocket";
 import { formatCurrency, timeAgo } from "@/lib/utils";
 import DataTable from "./DataTable";
 import { useState } from "react";
+import CoinHeader from "./CoinHeader";
 
 const LiveDataWraper = ({
   children,
@@ -14,11 +15,12 @@ const LiveDataWraper = ({
   coinOHLCData,
 }: LiveDataProps) => {
   const [liveInterval, setLiveInterval] = useState<"1s" | "1m">("1s");
-  const { trades, ohlcv } = useCoinGeckoWebSocket({
-    coinId,
-    poolId,
-    liveInterval,
-  });
+  //REALTIME DATA
+  // const { trades, ohlcv, price } = useCoinGeckoWebSocket({
+  //   coinId,
+  //   poolId,
+  //   liveInterval,
+  // });
 
   const tradeColumns: DataTableColumn<Trade>[] = [
     {
@@ -56,14 +58,25 @@ const LiveDataWraper = ({
 
   return (
     <section id="live-data-wrapper">
-      <p>{coinId}</p>
+      <CoinHeader
+        name={coin.name}
+        image={coin.image.large}
+        livePrice={coin.market_data.current_price.usd}
+        livePriceChangePercentage24h={
+          coin.market_data.price_change_percentage_24h_in_currency.usd
+        }
+        priceChangePercentage30d={
+          coin.market_data.price_change_percentage_30d_in_currency.usd
+        }
+        priceChange24h={coin.market_data.price_change_24h_in_currency.usd}
+      />
       <Separator className={"divider"} />
       {/* REALTIME CHART DATA */}
       <div className="trend">
         <CandleStickChart
           coinId={coinId}
           data={coinOHLCData}
-          liveOhlcv={ohlcv}
+          // liveOhlcv={ohlcv}
           mode="live"
           initialPeriod="daily"
           liveInterval={liveInterval}
@@ -73,7 +86,8 @@ const LiveDataWraper = ({
         </CandleStickChart>
       </div>
       <Separator className={"divider"} />
-      {tradeColumns && (
+      {/* REALTIME DATA */}
+      {/* {tradeColumns && (
         <div className="trades">
           <h4>Recent trades</h4>
           <DataTable
@@ -83,7 +97,7 @@ const LiveDataWraper = ({
             tableClassName="trades-table"
           />
         </div>
-      )}
+      )} */}
     </section>
   );
 };
