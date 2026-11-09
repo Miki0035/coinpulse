@@ -1,11 +1,15 @@
 import Converter from "@/components/Converter";
+import { LiveDataFallback } from "@/components/home/skeleton/FallBack";
 import LiveDataWraper from "@/components/LiveDataWraper";
 import { fetcher, getPools } from "@/lib/coingecko.actions";
 import { formatCurrency } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
-const Page = async ({ params }: NextPageProps) => {
+async function CoinPageContent({
+  params,
+}: Omit<NextPageProps, "searchParams">) {
   const { id } = await params;
 
   const [coinData, coinOHLCData] = await Promise.all([
@@ -50,7 +54,10 @@ const Page = async ({ params }: NextPageProps) => {
     {
       label: "Community",
       value: "-",
-      link: coinData.links.subreddit_url[0],
+      link:
+        coinData.links.subreddit_url !== null
+          ? coinData.links.subreddit_url[0]
+          : "",
       linkText: "Community",
     },
   ];
@@ -66,14 +73,16 @@ const Page = async ({ params }: NextPageProps) => {
   return (
     <main id="coin-details-page">
       <section className="primary">
-        <LiveDataWraper
-          coinId={id}
-          poolId={pool.id}
-          coin={coinData}
-          coinOHLCData={coinOHLCData}
-        >
-          {/* <h4>Exchange Listings</h4> */}
-        </LiveDataWraper>
+        <Suspense fallback={<LiveDataFallback />}>
+          <LiveDataWraper
+            coinId={id}
+            poolId={pool.id}
+            coin={coinData}
+            coinOHLCData={coinOHLCData}
+          >
+            {/* <h4>Exchange Listings</h4> */}
+          </LiveDataWraper>
+        </Suspense>
         {/* <h1 className="text-3xl font-bold">
           Coin <strong>{id}</strong>
         </h1>
@@ -110,6 +119,14 @@ const Page = async ({ params }: NextPageProps) => {
         {/* <p>Top Gainers and Losers</p> */}
       </section>
     </main>
+  );
+}
+
+const Page = async ({ params }: NextPageProps) => {
+  return (
+    <Suspense>
+      <CoinPageContent params={params} />
+    </Suspense>
   );
 };
 

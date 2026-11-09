@@ -135,3 +135,48 @@ export const CategoriesFallback = () => (
     />
   </div>
 );
+
+export const LiveDataFallback = () => (
+  <section
+    id="live-data-wrapper"
+    role="status"
+    aria-label="Loading live coin data"
+  >
+    <div className="flex items-center gap-3">
+      <div className="skeleton h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+        <div className="skeleton h-4 w-28 rounded" />
+        <div className="skeleton h-7 w-40 rounded" />
+      </div>
+    </div>
+
+    <div className="divider" />
+
+    <div className="trend">
+      <div id="candlestick-chart" className="mt-5 rounded-lg bg-dark-500 p-3">
+        <div className="chart-header">
+          <div className="skeleton h-6 w-40 rounded" />
+          <div className="button-group">
+            <div className="skeleton h-8 w-24 rounded" />
+            <div className="skeleton h-8 w-32 rounded" />
+          </div>
+        </div>
+        <div className="chart h-90 skeleton rounded" />
+      </div>
+    </div>
+
+    <div className="divider" />
+  </section>
+);
+
+export const HeaderFallback = () => (
+  <header role="status" aria-label="Loading navigation" aria-busy="true">
+    <div className="main-container inner">
+      <div className="skeleton h-10 w-[132px] rounded" />
+      <nav aria-hidden="true">
+        <div className="skeleton h-10 w-16 rounded" />
+        <div className="skeleton h-10 w-20 rounded" />
+      </nav>
+    </div>
+  </header>
+);

@@ -4,6 +4,7 @@ import qs from 'query-string'
 const BASE_URL = process.env.COINGEKO_BASE_URL
 const API_KEY = process.env.COINGEKO_API_KEY;
 
+
 if (!BASE_URL) throw new Error('Could not get BASE_URL');
 if (!API_KEY) throw new Error('Could not get API_KEY');
 
@@ -15,7 +16,7 @@ export async function fetcher<T>(endpoint: string, params?: QueryParams, revalid
 
     const response = await fetch(url, {
         headers: {
-            'x-ch-pro-api-key': API_KEY,
+            'x-cg-demo-api-key': API_KEY,
             'Content-Type': 'application/json'
         } as Record<string, string>,
         next: { revalidate }
@@ -23,6 +24,7 @@ export async function fetcher<T>(endpoint: string, params?: QueryParams, revalid
 
     if (!response.ok) {
         const errorBody: CoinGeckoErrorBody = await response.json().catch(() => ({}));
+        console.error(`Failed fetcher: `, errorBody)
         throw new Error(`API Error: ${errorBody.error || response.statusText}`)
     }
     return response.json();
@@ -65,5 +67,18 @@ export async function getPools(
         return poolData.data?.[0] ?? fallback;
     } catch {
         return fallback;
+    }
+}
+
+
+export async function searchCoins(query: string): Promise<SearchCoin[]> {
+    try {
+        const response = await fetcher<SearchCoin[]>("search", {
+            query
+        });
+        return response;
+    } catch (error) {
+        console.error('coingecko search coin error: ', error)
+        return [];
     }
 }

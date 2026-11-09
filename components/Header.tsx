@@ -3,8 +3,10 @@ import { cn } from "cn";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
+import { HeaderFallback } from "./home/skeleton/FallBack";
 
-const Header = () => {
+const HeaderContent = () => {
   const pathname = usePathname();
 
   return (
@@ -28,7 +30,7 @@ const Header = () => {
           >
             Home
           </Link>
-          <p>Search modal</p>
+          {/* <p>Search modal</p> */}
           <Link
             href={"/coins"}
             className={cn("nav-link", { "is-active": pathname === "/coins" })}
@@ -38,6 +40,14 @@ const Header = () => {
         </nav>
       </div>
     </header>
+  );
+};
+
+const Header = () => {
+  return (
+    <Suspense fallback={<HeaderFallback />}>
+      <HeaderContent />
+    </Suspense>
   );
 };
 
